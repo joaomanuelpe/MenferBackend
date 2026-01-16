@@ -8,13 +8,18 @@ public class MotoristaDTO {
     private String cpf;
     private String name;
     private String phone;
-    private String registrationNumber;
+    private String rg;
     private String licenseExpiryDate;
-    private String birthDate; // NOVO CAMPO
-    private String address;
+    private String birthDate;
+    private String logradouro;
+    private String numero;
+    private String complemento;
+    private String bairro;
+    private String cidade;
+    private String estado;
+    private String cep;
     private String cnh;
     private String cetpp;
-    private String rg;
     private String arqCnhBase64;
     private String comprovanteRsBase64;
     private String arqCetppBase64;
@@ -25,13 +30,18 @@ public class MotoristaDTO {
         this.cpf = motorista.getCpf();
         this.name = motorista.getName();
         this.phone = motorista.getPhone();
-        this.registrationNumber = motorista.getRegistrationNumber();
+        this.rg = motorista.getRg();
         this.licenseExpiryDate = motorista.getLicenseExpiryDate() != null ? motorista.getLicenseExpiryDate().toString() : null;
-        this.birthDate = motorista.getBirthDate() != null ? motorista.getBirthDate().toString() : null; // NOVO CAMPO
-        this.address = motorista.getAddress();
+        this.birthDate = motorista.getBirthDate() != null ? motorista.getBirthDate().toString() : null;
+        this.logradouro = motorista.getLogradouro();
+        this.numero = motorista.getNumero();
+        this.complemento = motorista.getComplemento();
+        this.bairro = motorista.getBairro();
+        this.cidade = motorista.getCidade();
+        this.estado = motorista.getEstado();
+        this.cep = motorista.getCep();
         this.cnh = motorista.getCnh();
         this.cetpp = motorista.getCetpp();
-        this.rg = motorista.getRg();
 
         this.arqCnhBase64 = motorista.getArqCnh() != null ? Base64.getEncoder().encodeToString(motorista.getArqCnh()) : null;
         this.comprovanteRsBase64 = motorista.getComprovanteRs() != null ? Base64.getEncoder().encodeToString(motorista.getComprovanteRs()) : null;
@@ -40,7 +50,6 @@ public class MotoristaDTO {
         this.arqAsoBase64 = motorista.getArqAso() != null ? Base64.getEncoder().encodeToString(motorista.getArqAso()) : null;
     }
 
-    // GETTERS E SETTERS
     public String getCpf() { return cpf; }
     public void setCpf(String cpf) { this.cpf = cpf; }
 
@@ -50,8 +59,8 @@ public class MotoristaDTO {
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
 
-    public String getRegistrationNumber() { return registrationNumber; }
-    public void setRegistrationNumber(String registrationNumber) { this.registrationNumber = registrationNumber; }
+    public String getRg() { return rg; }
+    public void setRg(String rg) { this.rg = rg; }
 
     public String getLicenseExpiryDate() { return licenseExpiryDate; }
     public void setLicenseExpiryDate(String licenseExpiryDate) { this.licenseExpiryDate = licenseExpiryDate; }
@@ -59,17 +68,32 @@ public class MotoristaDTO {
     public String getBirthDate() { return birthDate; }
     public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
 
-    public String getAddress() { return address; }
-    public void setAddress(String address) { this.address = address; }
+    public String getLogradouro() { return logradouro; }
+    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
+
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
+
+    public String getComplemento() { return complemento; }
+    public void setComplemento(String complemento) { this.complemento = complemento; }
+
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
+
+    public String getCidade() { return cidade; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+
+    public String getCep() { return cep; }
+    public void setCep(String cep) { this.cep = cep; }
 
     public String getCnh() { return cnh; }
     public void setCnh(String cnh) { this.cnh = cnh; }
 
     public String getCetpp() { return cetpp; }
     public void setCetpp(String cetpp) { this.cetpp = cetpp; }
-
-    public String getRg() { return rg; }
-    public void setRg(String rg) { this.rg = rg; }
 
     public String getArqCnhBase64() { return arqCnhBase64; }
     public void setArqCnhBase64(String arqCnhBase64) { this.arqCnhBase64 = arqCnhBase64; }

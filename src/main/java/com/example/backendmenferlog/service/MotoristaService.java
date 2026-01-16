@@ -1,6 +1,5 @@
 package com.example.backendmenferlog.service;
 
-import com.example.backendmenferlog.entities.Fornecedor;
 import com.example.backendmenferlog.entities.Motorista;
 import com.example.backendmenferlog.repositories.MotoristaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,8 @@ public class MotoristaService {
         return motoristaRepository.save(motorista);
     }
 
-    public Motorista get (String cpf) {
-        Motorista motorista = motoristaRepository.findById(cpf).orElse(null);
-        return motorista;
+    public Motorista get(String cpf) {
+        return motoristaRepository.findById(cpf).orElse(null);
     }
 
     public List<Motorista> getAll() {

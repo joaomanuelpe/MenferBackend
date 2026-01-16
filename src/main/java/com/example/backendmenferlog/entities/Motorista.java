@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
@@ -21,8 +20,8 @@ public class Motorista {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "\"registrationNumber\"")
-    private String registrationNumber;
+    @Column(name = "rg")
+    private String rg;
 
     @Column(name = "\"licenseExpiryDate\"")
     private LocalDate licenseExpiryDate;
@@ -30,20 +29,38 @@ public class Motorista {
     @Column(name = "\"birthDate\"")
     private LocalDate birthDate;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "logradouro")
+    private String logradouro;
+
+    @Column(name = "numero")
+    private String numero;
+
+    @Column(name = "complemento")
+    private String complemento;
+
+    @Column(name = "bairro")
+    private String bairro;
+
+    @Column(name = "cidade")
+    private String cidade;
+
+    @Column(name = "estado")
+    private String estado;
+
+    @Column(name = "cep")
+    private String cep;
 
     @Column(name = "cnh")
     private String cnh;
+
+    @Column(name = "cetpp")
+    private String cetpp;
 
     @Column(name = "\"arqCnh\"")
     private byte[] arqCnh;
 
     @Column(name = "\"comprovanteRs\"")
     private byte[] comprovanteRs;
-
-    @Column(name = "cetpp")
-    private String cetpp;
 
     @Column(name = "\"arqCetpp\"")
     private byte[] arqCetpp;
@@ -54,152 +71,92 @@ public class Motorista {
     @Column(name = "\"arqAso\"")
     private byte[] arqAso;
 
-    @Column(name = "rg")
-    private String rg;
-
     public Motorista() {
-        this("", "", "", "", null, null, "", "", null, null, "", null, null, null, "");
     }
 
-    // CONSTRUTOR ATUALIZADO COM birthDate
-    public Motorista(String cpf, String name, String phone, String registrationNumber, LocalDate licenseExpiryDate, LocalDate birthDate, String address, String cnh, byte[] arqCnh, byte[] comprovanteRs, String cetpp, byte[] arqCetpp, byte[] arqExamTox, byte[] arqAso, String rg) {
+    public Motorista(String cpf, String name, String phone, String rg, LocalDate licenseExpiryDate,
+                     LocalDate birthDate, String logradouro, String numero, String complemento,
+                     String bairro, String cidade, String estado, String cep, String cnh, String cetpp,
+                     byte[] arqCnh, byte[] comprovanteRs, byte[] arqCetpp, byte[] arqExamTox, byte[] arqAso) {
         this.cpf = cpf;
         this.name = name;
         this.phone = phone;
-        this.registrationNumber = registrationNumber;
+        this.rg = rg;
         this.licenseExpiryDate = licenseExpiryDate;
         this.birthDate = birthDate;
-        this.address = address;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
         this.cnh = cnh;
+        this.cetpp = cetpp;
         this.arqCnh = arqCnh;
         this.comprovanteRs = comprovanteRs;
-        this.cetpp = cetpp;
         this.arqCetpp = arqCetpp;
         this.arqExamTox = arqExamTox;
         this.arqAso = arqAso;
-        this.rg = rg;
     }
 
-    // Getters e Setters existentes...
+    public String getCpf() { return cpf; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
 
-    public String getCpf() {
-        return cpf;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
-    public String getName() {
-        return name;
-    }
+    public String getRg() { return rg; }
+    public void setRg(String rg) { this.rg = rg; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public LocalDate getLicenseExpiryDate() { return licenseExpiryDate; }
+    public void setLicenseExpiryDate(LocalDate licenseExpiryDate) { this.licenseExpiryDate = licenseExpiryDate; }
 
-    public String getPhone() {
-        return phone;
-    }
+    public LocalDate getBirthDate() { return birthDate; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+    public String getLogradouro() { return logradouro; }
+    public void setLogradouro(String logradouro) { this.logradouro = logradouro; }
 
-    public String getRegistrationNumber() {
-        return registrationNumber;
-    }
+    public String getNumero() { return numero; }
+    public void setNumero(String numero) { this.numero = numero; }
 
-    public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
-    }
+    public String getComplemento() { return complemento; }
+    public void setComplemento(String complemento) { this.complemento = complemento; }
 
-    public LocalDate getLicenseExpiryDate() {
-        return licenseExpiryDate;
-    }
+    public String getBairro() { return bairro; }
+    public void setBairro(String bairro) { this.bairro = bairro; }
 
-    public void setLicenseExpiryDate(LocalDate licenseExpiryDate) {
-        this.licenseExpiryDate = licenseExpiryDate;
-    }
+    public String getCidade() { return cidade; }
+    public void setCidade(String cidade) { this.cidade = cidade; }
 
-    // GETTER E SETTER DO NOVO CAMPO
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
+    public String getCep() { return cep; }
+    public void setCep(String cep) { this.cep = cep; }
 
-    public String getAddress() {
-        return address;
-    }
+    public String getCnh() { return cnh; }
+    public void setCnh(String cnh) { this.cnh = cnh; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public String getCetpp() { return cetpp; }
+    public void setCetpp(String cetpp) { this.cetpp = cetpp; }
 
-    public String getCnh() {
-        return cnh;
-    }
+    public byte[] getArqCnh() { return arqCnh; }
+    public void setArqCnh(byte[] arqCnh) { this.arqCnh = arqCnh; }
 
-    public void setCnh(String cnh) {
-        this.cnh = cnh;
-    }
+    public byte[] getComprovanteRs() { return comprovanteRs; }
+    public void setComprovanteRs(byte[] comprovanteRs) { this.comprovanteRs = comprovanteRs; }
 
-    public byte[] getArqCnh() {
-        return arqCnh;
-    }
+    public byte[] getArqCetpp() { return arqCetpp; }
+    public void setArqCetpp(byte[] arqCetpp) { this.arqCetpp = arqCetpp; }
 
-    public void setArqCnh(byte[] arqCnh) {
-        this.arqCnh = arqCnh;
-    }
+    public byte[] getArqExamTox() { return arqExamTox; }
+    public void setArqExamTox(byte[] arqExamTox) { this.arqExamTox = arqExamTox; }
 
-    public byte[] getComprovanteRs() {
-        return comprovanteRs;
-    }
-
-    public void setComprovanteRs(byte[] comprovanteRs) {
-        this.comprovanteRs = comprovanteRs;
-    }
-
-    public String getCetpp() {
-        return cetpp;
-    }
-
-    public void setCetpp(String cetpp) {
-        this.cetpp = cetpp;
-    }
-
-    public byte[] getArqCetpp() {
-        return arqCetpp;
-    }
-
-    public void setArqCetpp(byte[] arqCetpp) {
-        this.arqCetpp = arqCetpp;
-    }
-
-    public byte[] getArqExamTox() {
-        return arqExamTox;
-    }
-
-    public void setArqExamTox(byte[] arqExamTox) {
-        this.arqExamTox = arqExamTox;
-    }
-
-    public byte[] getArqAso() {
-        return arqAso;
-    }
-
-    public void setArqAso(byte[] arqAso) {
-        this.arqAso = arqAso;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
+    public byte[] getArqAso() { return arqAso; }
+    public void setArqAso(byte[] arqAso) { this.arqAso = arqAso; }
 }

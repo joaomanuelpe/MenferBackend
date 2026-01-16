@@ -56,24 +56,24 @@ public class VeiculoRestController {
     @PostMapping
     public ResponseEntity<Object> save (
             @RequestParam String placa,
-            @RequestParam String tipo,
-            @RequestParam String renavam,
-            @RequestParam String marca,
-            @RequestParam String modelo,
-            @RequestParam String chassi,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate licenciamento,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiraLicenciamento,
-            @RequestParam String anttText,
-            @RequestParam(required = false) MultipartFile antt,  // Arquivo opcional
-            @RequestParam String idRastreador,
-            @RequestParam String empresaRastreador,
-            @RequestParam(required = false) MultipartFile contratoArrendamento,  // Arquivo opcional
-            @RequestParam String civ,
-            @RequestParam String civNumero,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiraCiv,
-            @RequestParam(required = false) MultipartFile arqCrlv,  // Arquivo opcional
-            @RequestParam(required = false) MultipartFile arqCrono,  // Arquivo opcional
-            @RequestParam(required = false) MultipartFile arqLaudoOpa  // Arquivo opcional
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) String renavam,
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String chassi,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate licenciamento,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiraLicenciamento,
+            @RequestParam(required = false) String anttText,
+            @RequestParam(required = false) MultipartFile antt,
+            @RequestParam(required = false) String idRastreador,
+            @RequestParam(required = false) String empresaRastreador,
+            @RequestParam(required = false) MultipartFile contratoArrendamento,
+            @RequestParam(required = false) String civ,
+            @RequestParam(required = false) String civNumero,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate expiraCiv,
+            @RequestParam(required = false) MultipartFile arqCrlv,
+            @RequestParam(required = false) MultipartFile arqCrono,
+            @RequestParam(required = false) MultipartFile arqLaudoOpa
     ) throws IOException {
 
         byte[] anttBytes = antt != null ? antt.getBytes() : null;

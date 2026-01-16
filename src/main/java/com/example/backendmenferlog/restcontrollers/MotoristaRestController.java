@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
@@ -24,8 +25,12 @@ public class MotoristaRestController {
     @GetMapping
     public ResponseEntity<Object> getAll() {
         List<Motorista> motoristaList = motoristaService.getAll();
-        if(!motoristaList.isEmpty())
-            return ResponseEntity.ok(motoristaList);
+        if(!motoristaList.isEmpty()) {
+            List<MotoristaDTO> dtoList = motoristaList.stream()
+                    .map(MotoristaDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(dtoList);
+        }
         return ResponseEntity.badRequest().body("Não há nenhum motorista cadastrado");
     }
 
@@ -38,50 +43,65 @@ public class MotoristaRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> postMotorista(@RequestParam String name,
-                                                @RequestParam String phone,
-                                                @RequestParam String rg,
-                                                @RequestParam String cpf,
-                                                @RequestParam String registrationNumber,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate licenseExpiryDate,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
-                                                @RequestParam String address,
-                                                @RequestParam String cnh,
-                                                @RequestParam String cetpp,
-                                                @RequestParam(required = false) MultipartFile arqCnh,
-                                                @RequestParam(required = false) MultipartFile comprovanteRs,
-                                                @RequestParam(required = false) MultipartFile arqCetpp,
-                                                @RequestParam(required = false) MultipartFile arqExamTox,
-                                                @RequestParam(required = false) MultipartFile arqAso) throws IOException {
+    public ResponseEntity<Object> postMotorista(@RequestParam("cpf") String cpf,
+                                                @RequestParam("name") String name,
+                                                @RequestParam(value = "phone", required = false) String phone,
+                                                @RequestParam(value = "rg", required = false) String rg,
+                                                @RequestParam(value = "licenseExpiryDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate licenseExpiryDate,
+                                                @RequestParam(value = "birthDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
+                                                @RequestParam(value = "logradouro", required = false) String logradouro,
+                                                @RequestParam(value = "numero", required = false) String numero,
+                                                @RequestParam(value = "complemento", required = false) String complemento,
+                                                @RequestParam(value = "bairro", required = false) String bairro,
+                                                @RequestParam(value = "cidade", required = false) String cidade,
+                                                @RequestParam(value = "estado", required = false) String estado,
+                                                @RequestParam(value = "cep", required = false) String cep,
+                                                @RequestParam(value = "cnh", required = false) String cnh,
+                                                @RequestParam(value = "cetpp", required = false) String cetpp,
+                                                @RequestParam(value = "arqCnh", required = false) MultipartFile arqCnh,
+                                                @RequestParam(value = "comprovanteRs", required = false) MultipartFile comprovanteRs,
+                                                @RequestParam(value = "arqCetpp", required = false) MultipartFile arqCetpp,
+                                                @RequestParam(value = "arqExamTox", required = false) MultipartFile arqExamTox,
+                                                @RequestParam(value = "arqAso", required = false) MultipartFile arqAso) throws IOException {
         byte[] arqCnhBytea = arqCnh != null ? arqCnh.getBytes() : null;
         byte[] comprovanteRsBytea = comprovanteRs != null ? comprovanteRs.getBytes() : null;
         byte[] arqCetppBytea = arqCetpp != null ? arqCetpp.getBytes() : null;
         byte[] arqExamToxBytea = arqExamTox != null ? arqExamTox.getBytes() : null;
         byte[] arqAsoBytea = arqAso != null ? arqAso.getBytes() : null;
 
-        // CONSTRUTOR ATUALIZADO COM birthDate
-        Motorista motorista = new Motorista(cpf, name, phone, registrationNumber, licenseExpiryDate, birthDate, address,
+        Motorista motorista = new Motorista(
+                cpf,
+                name,
+                phone,
+                rg,
+                licenseExpiryDate,
+                birthDate,
+                logradouro,
+                numero,
+                complemento != null ? complemento : "",
+                bairro,
+                cidade,
+                estado,
+                cep,
                 cnh,
+                cetpp,
                 arqCnhBytea,
                 comprovanteRsBytea,
-                cetpp,
                 arqCetppBytea,
                 arqExamToxBytea,
-                arqAsoBytea,
-                rg
+                arqAsoBytea
         );
+
         Motorista novoMotorista = motoristaService.add(motorista);
         if(novoMotorista != null)
-            return ResponseEntity.ok(novoMotorista);
+            return ResponseEntity.ok(new MotoristaDTO(novoMotorista));
         return ResponseEntity.badRequest().body("Erro ao cadastrar motorista");
     }
 
-    // CORRIGIDO: Agora aceita CPF na URL
     @PutMapping("/{cpf}")
     public ResponseEntity<Object> putMotorista(@PathVariable String cpf, @RequestBody Motorista motorista) {
         Motorista motorista1 = motoristaService.get(cpf);
         if(motorista1 != null) {
-            // Garantir que o CPF da URL seja usado
             motorista.setCpf(cpf);
             Motorista motorista2 = motoristaService.add(motorista);
             return ResponseEntity.ok("Motorista de cpf: " + cpf + " foi atualizado com sucesso!");
