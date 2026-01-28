@@ -25,9 +25,6 @@ public class AbastecimentoRestController {
     public ResponseEntity<Object> getAll() {
         try {
             List<AbastecimentoResponseDTO> abastecimentos = abastecimentoService.getAll();
-            if (abastecimentos.isEmpty()) {
-                return ResponseEntity.badRequest().body("Não foram encontrados abastecimentos!");
-            }
             return ResponseEntity.ok().body(Map.of("status", 200, "abastecimentos", abastecimentos));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro ao consultar os abastecimentos: " + e.getMessage());

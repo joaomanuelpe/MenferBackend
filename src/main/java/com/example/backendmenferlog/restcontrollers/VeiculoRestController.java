@@ -1,10 +1,10 @@
 package com.example.backendmenferlog.restcontrollers;
 
-import com.example.backendmenferlog.entities.Cliente;
 import com.example.backendmenferlog.entities.Veiculo;
 import com.example.backendmenferlog.service.VeiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -103,30 +102,69 @@ public class VeiculoRestController {
                 arqCronoBytes,
                 arqLaudoOpaBytes
         );
-        System.out.println(placa);
 
         Veiculo novoVeiculo = veiculoService.save(veiculo);
 
-        if (novoVeiculo != null)
-            return ResponseEntity.ok(novoVeiculo);
-        return ResponseEntity.badRequest().body("Não foi possivel adicionar o veiculo.");
+        return ResponseEntity.ok(novoVeiculo);
     }
 
-    @PutMapping
-    public ResponseEntity<Object> update(@RequestBody Veiculo veiculo) {
-        try {
-            Veiculo veiculo1 = veiculoService.save(veiculo);
-            return ResponseEntity.ok("Veículo alterado com sucesso!");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao atualizar veículo!");
-        }
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> update(
+            @RequestParam String placa,
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) String renavam,
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) String chassi,
+            @RequestParam(required = false) String anttText,
+            @RequestParam(required = false) LocalDate licenciamento,
+            @RequestParam(required = false) LocalDate expiraLicenciamento,
+            @RequestParam(required = false) String civ,
+            @RequestParam(required = false) String civNumero,
+            @RequestParam(required = false) LocalDate expiraCiv,
+            @RequestParam(required = false) String idRastreador,
+            @RequestParam(required = false) String empresaRastreador,
+
+            @RequestParam(required = false) MultipartFile antt,
+            @RequestParam(required = false) MultipartFile contratoArrendamento,
+            @RequestParam(required = false) MultipartFile arqCrlv,
+            @RequestParam(required = false) MultipartFile arqCrono,
+            @RequestParam(required = false) MultipartFile arqLaudoOpa
+    ) throws IOException {
+
+        Veiculo veiculo = veiculoService.get(placa);
+
+        if (tipo != null) veiculo.setTipo(tipo);
+        if (renavam != null) veiculo.setRenavam(renavam);
+        if (marca != null) veiculo.setMarca(marca);
+        if (modelo != null) veiculo.setModelo(modelo);
+        if (chassi != null) veiculo.setChassi(chassi);
+        if (anttText != null) veiculo.setAnttText(anttText);
+        if (licenciamento != null) veiculo.setLicenciamento(licenciamento);
+        if (expiraLicenciamento != null) veiculo.setExpiraLicenciamento(expiraLicenciamento);
+        if (civ != null) veiculo.setCiv(civ);
+        if (civNumero != null) veiculo.setCivNumero(civNumero);
+        if (expiraCiv != null) veiculo.setExpiraCiv(expiraCiv);
+        if (idRastreador != null) veiculo.setIdRastreador(idRastreador);
+        if (empresaRastreador != null) veiculo.setEmpresaRastreador(empresaRastreador);
+
+        if (antt != null && !antt.isEmpty()) veiculo.setAntt(antt.getBytes());
+        if (contratoArrendamento != null && !contratoArrendamento.isEmpty())
+            veiculo.setContratoArrendamento(contratoArrendamento.getBytes());
+        if (arqCrlv != null && !arqCrlv.isEmpty()) veiculo.setArqCrlv(arqCrlv.getBytes());
+        if (arqCrono != null && !arqCrono.isEmpty()) veiculo.setArqCrono(arqCrono.getBytes());
+        if (arqLaudoOpa != null && !arqLaudoOpa.isEmpty())
+            veiculo.setArqLaudoOpa(arqLaudoOpa.getBytes());
+
+        veiculoService.update(veiculo);
+
+        return ResponseEntity.ok("Veículo alterado com sucesso!");
     }
+
 
     @DeleteMapping("/{placa}")
-    public ResponseEntity<Object> delete(@PathVariable String placa) {
-        boolean flag = veiculoService.delete(placa);
-        if (flag)
-            return ResponseEntity.ok("Veículo excluído com sucesso!");
-        return ResponseEntity.badRequest().body("Erro ao excluir veículo!");
+    public ResponseEntity<Void> delete(@PathVariable String placa) {
+        veiculoService.delete(placa);
+        return ResponseEntity.noContent().build();
     }
 }

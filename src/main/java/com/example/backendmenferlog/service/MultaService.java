@@ -7,7 +7,10 @@ import com.example.backendmenferlog.repositories.DespesaRepository;
 import com.example.backendmenferlog.repositories.MultaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,6 +23,13 @@ public class MultaService {
 
     @Transactional
     public Despesa save (MultaDto multaDto) {
+        if (multaDto.getMulta().getMotorista().getCpf() == null || multaDto.getMulta().getMotorista().getCpf().equals("") || multaDto.getMulta().getVeiculo().getPlaca() == null || multaDto.getMulta().getVeiculo().getPlaca().equals("")) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Dados do veiculo ou motorista não inseridos."
+            );
+        }
+
         Multa novaMulta = new Multa(multaDto.getMulta().getIdMulta(), multaDto.getMulta().getMotorista(), multaDto.getMulta().getVeiculo(), multaDto.getMulta().getNumAutoInfracao(), multaDto.getMulta().getOrgaoAutuador());
         multaRepository.save(novaMulta);
         Despesa novaDespesa = new Despesa(multaDto.getIdDepesa(), multaDto.getDataDespesa(), multaDto.getDataVencimento(), multaDto.getValor(), novaMulta, "Pendente", multaDto.getDescricao());

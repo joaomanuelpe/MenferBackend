@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +30,9 @@ public class MultaRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> save (@RequestBody MultaDto multaDto) {
-        try {
-            Despesa despesa = multaService.save(multaDto);
-            return ResponseEntity.ok(despesa);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Não foi possível salvar a nova multa: " + e.getMessage());
-        }
+    public ResponseEntity<Object> save (@RequestBody MultaDto multaDto) throws IOException {
+        Despesa despesa = multaService.save(multaDto);
+        return ResponseEntity.ok(despesa);
     }
 
     @PutMapping

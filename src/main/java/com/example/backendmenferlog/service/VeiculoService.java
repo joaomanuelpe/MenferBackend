@@ -1,16 +1,15 @@
 package com.example.backendmenferlog.service;
 
-import com.example.backendmenferlog.entities.Cliente;
 import com.example.backendmenferlog.entities.Veiculo;
 import com.example.backendmenferlog.repositories.VeiculoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,10 +17,17 @@ public class VeiculoService {
     @Autowired
     private VeiculoRepository veiculoRepository;
 
-    public Veiculo save (Veiculo veiculo) {
+    public Veiculo save(Veiculo veiculo) {
+
+        if (veiculoRepository.existsById(veiculo.getPlaca())) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Já existe um veículo cadastrado com essa placa"
+            );
+        }
+
         return veiculoRepository.save(veiculo);
     }
-
     public Veiculo get(String placa) {
         return veiculoRepository.findById(placa).orElse(null);
     }
@@ -42,13 +48,25 @@ public class VeiculoService {
                 .collect(Collectors.toList());
     }
 
-    public boolean delete(String placa) {
-        Veiculo veiculo = veiculoRepository.findById(placa).orElse(null);
+    public void delete(String placa) {
+        Veiculo veiculo = veiculoRepository.findById(placa)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Veículo não encontrado"
+                ));
+
         try {
             veiculoRepository.delete(veiculo);
-            return true;
-        } catch (Exception e) {
-            return false;
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Não é possível excluir o veículo porque existem multas associadas a ele"
+            );
         }
     }
+
+    public void update(Veiculo veiculo) throws IOException {
+        veiculoRepository.save(veiculo);
+    }
+
 }
