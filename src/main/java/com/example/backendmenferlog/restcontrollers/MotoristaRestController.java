@@ -5,6 +5,7 @@ import com.example.backendmenferlog.entities.Motorista;
 import com.example.backendmenferlog.service.MotoristaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @CrossOrigin
@@ -69,6 +71,7 @@ public class MotoristaRestController {
         byte[] arqExamToxBytea = arqExamTox != null ? arqExamTox.getBytes() : null;
         byte[] arqAsoBytea = arqAso != null ? arqAso.getBytes() : null;
 
+
         Motorista motorista = new Motorista(
                 cpf,
                 name,
@@ -98,15 +101,42 @@ public class MotoristaRestController {
         return ResponseEntity.badRequest().body("Erro ao cadastrar motorista");
     }
 
-    @PutMapping("/{cpf}")
-    public ResponseEntity<Object> putMotorista(@PathVariable String cpf, @RequestBody Motorista motorista) {
-        Motorista motorista1 = motoristaService.get(cpf);
-        if(motorista1 != null) {
-            motorista.setCpf(cpf);
-            Motorista motorista2 = motoristaService.add(motorista);
-            return ResponseEntity.ok("Motorista de cpf: " + cpf + " foi atualizado com sucesso!");
+    @PutMapping(value = "/{cpf}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> putMotorista(@PathVariable String cpf,
+                                          @RequestParam(required = false) String name,
+                                          @RequestParam(required = false) String phone,
+                                          @RequestParam(required = false) String rg,
+
+                                          @RequestParam(required = false)
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate licenseExpiryDate,
+
+                                          @RequestParam(required = false)
+                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate birthDate,
+
+                                          @RequestParam(required = false) String logradouro,
+                                          @RequestParam(required = false) String numero,
+                                          @RequestParam(required = false) String complemento,
+                                          @RequestParam(required = false) String bairro,
+                                          @RequestParam(required = false) String cidade,
+                                          @RequestParam(required = false) String estado,
+                                          @RequestParam(required = false) String cep,
+                                          @RequestParam(required = false) String cnh,
+                                          @RequestParam(required = false) String cetpp,
+
+                                          @RequestParam(required = false) MultipartFile arqCnh,
+                                          @RequestParam(required = false) MultipartFile comprovanteRs,
+                                          @RequestParam(required = false) MultipartFile arqCetpp,
+                                          @RequestParam(required = false) MultipartFile arqExamTox,
+                                          @RequestParam(required = false) MultipartFile arqAso) {
+        try {
+            motoristaService.update(cpf, name, phone, rg, licenseExpiryDate, birthDate, logradouro, numero, complemento, bairro, cidade, estado, cep, cnh, cetpp, arqCnh, comprovanteRs, arqCetpp, arqExamTox, arqAso);
+            return ResponseEntity.ok(
+                    Map.of("status", 200, "message", "Motorista alterado com sucesso!")
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("status", 500, "message", "Não foi possível atualizar o motorista: " + e.getMessage()));
         }
-        return ResponseEntity.badRequest().body("Erro ao atualizar motorista de cpf: " + cpf);
     }
 
     @DeleteMapping("/{cpf}")
