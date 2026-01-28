@@ -23,33 +23,25 @@ public class VeiculoRestController {
     @GetMapping(value = "/{placa}")
     public ResponseEntity<Object> get (@PathVariable(name = "placa") String placa) {
         Veiculo veiculo = veiculoService.get(placa);
-        if (veiculo != null)
-            return ResponseEntity.ok(veiculo);
-        return ResponseEntity.badRequest().body("Não foi possível recuperar o veículo.");
+        return ResponseEntity.ok(veiculo);
     }
 
     @GetMapping
     public ResponseEntity<Object> getAll () {
         List<Veiculo> veiculos = veiculoService.getAll();
-        if (!veiculos.isEmpty())
-            return ResponseEntity.ok(veiculos);
-        return ResponseEntity.badRequest().body("Não foi possível recuperar os veículos.");
+        return ResponseEntity.ok(veiculos);
     }
 
     @GetMapping("/cavalo")
     public ResponseEntity<Object> getCavalo () {
         List<Veiculo> veiculos = veiculoService.getAllCavalos();
-        if (!veiculos.isEmpty())
-            return ResponseEntity.ok(veiculos);
-        return ResponseEntity.badRequest().body("Não foi possível recuperar os cavalos.");
+        return ResponseEntity.ok(veiculos);
     }
 
     @GetMapping("/reboque")
     public ResponseEntity<Object> getReboque () {
         List<Veiculo> veiculos = veiculoService.getAllReboques();
-        if (!veiculos.isEmpty())
-            return ResponseEntity.ok(veiculos);
-        return ResponseEntity.badRequest().body("Não foi possível recuperar os reboques.");
+        return ResponseEntity.ok(veiculos);
     }
 
     @PostMapping

@@ -43,6 +43,7 @@ public class ParcelaRestController {
     public ResponseEntity<Object> update(@RequestBody ParcelaDto parcelaDto) {
         try {
             Despesa despesa = parcelaService.update(parcelaDto);
+            System.out.println("AQUIIII");
             return ResponseEntity.ok(despesa);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Não foi possível alterar a multa: " + e.getMessage());

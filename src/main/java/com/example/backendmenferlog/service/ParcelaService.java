@@ -61,10 +61,11 @@ public class ParcelaService {
     @Transactional
     public Despesa updateGasto(Gasto novoGasto) {
         Gasto gastoExistente = gastoRepository.findById(novoGasto.getIdGasto()).orElse(null);
+
         if (gastoExistente != null) {
             gastoRepository.save(novoGasto);
         }
-        return null;
+        return new Despesa(0L, null, null, 0, new Parcela(0L, 0, novoGasto), "", "");
     }
 
     @Transactional
