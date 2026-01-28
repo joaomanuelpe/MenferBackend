@@ -30,6 +30,9 @@ public class ParcelaService {
 
     @Transactional
     public List<Despesa> save (ParcelaDto parcelaDto) {
+        if(parcelaDto.getParcela().getGasto().getQtdParc() == 0)
+            parcelaDto.getParcela().getGasto().setQtdParc(1);
+
         double valorParc = parcelaDto.getValor() / parcelaDto.getParcela().getGasto().getQtdParc();
         List<Despesa> parcelas = new ArrayList<>();
         Gasto gasto = new Gasto(parcelaDto.getParcela().getGasto().getIdGasto(), parcelaDto.getParcela().getGasto().getFornecedor(), parcelaDto.getParcela().getGasto().getNumNotaFisc(), parcelaDto.getParcela().getGasto().getNumBoleto(), parcelaDto.getParcela().getGasto().getQtdParc());

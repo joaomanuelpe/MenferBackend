@@ -28,18 +28,16 @@ public class ParcelaRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody ParcelaDto parcelaDto) {
-        List<Despesa> parcelas;
-        try {
-            parcelas = parcelaService.save(parcelaDto);
-            if (!parcelas.isEmpty())
-                return ResponseEntity.ok(parcelas);
-            else
-                return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Não foi possível inserir a despesa: " + e.getMessage());
+    public ResponseEntity<List<Despesa>> save(@RequestBody ParcelaDto parcelaDto) {
+        List<Despesa> parcelas = parcelaService.save(parcelaDto);
+
+        if (parcelas.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+
+        return ResponseEntity.ok(parcelas);
     }
+
 
     @PutMapping
     public ResponseEntity<Object> update(@RequestBody ParcelaDto parcelaDto) {
