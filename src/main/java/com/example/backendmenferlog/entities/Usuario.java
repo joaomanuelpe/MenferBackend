@@ -22,20 +22,21 @@ public class Usuario {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "\"nivelAcesso\"", nullable = false)
-    private String nivelAcesso;
+    @ManyToOne
+    @JoinColumn(name = "acesso", nullable = false)
+    private Acesso acesso;
 
     public Usuario() {
-        this(0, "", "", "", "");
+        this(0, "", "", "", null);
     }
 
     public Usuario(Integer idUsuario, String nomeUsuario, String senhaUsuario,
-                   String email, String nivelAcesso) {
+                   String email, Acesso acesso) {
         this.idUsuario = idUsuario;
         this.nomeUsuario = nomeUsuario;
         this.senhaUsuario = senhaUsuario;
         this.email = email;
-        this.nivelAcesso = nivelAcesso;
+        this.acesso = acesso;
     }
 
     public Integer getIdUsuario() {
@@ -70,11 +71,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getNivelAcesso() {
-        return nivelAcesso;
+    public Acesso getAcesso() {
+        return acesso;
     }
 
-    public void setNivelAcesso(String nivelAcesso) {
-        this.nivelAcesso = nivelAcesso;
+    public void setAcesso(Acesso acesso) {
+        this.acesso = acesso;
     }
 }

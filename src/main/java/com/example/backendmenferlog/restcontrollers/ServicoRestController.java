@@ -20,8 +20,6 @@ public class ServicoRestController {
     @GetMapping
     public ResponseEntity<Object> getAll () {
         List<Despesa> servicos = servicoService.getAll();
-        if(servicos.isEmpty())
-            return ResponseEntity.badRequest().body("Não foi possível recuperar servicos!");
         return ResponseEntity.ok(servicos);
     }
 

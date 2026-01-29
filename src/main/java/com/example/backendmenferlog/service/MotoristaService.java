@@ -17,6 +17,10 @@ public class MotoristaService {
     private MotoristaRepository motoristaRepository;
 
     public Motorista add(Motorista motorista) {
+        if (motorista.getCpf() == null || motorista.getCpf().isBlank()) {
+            throw new IllegalArgumentException("CPF é obrigatório");
+        }
+
         return motoristaRepository.save(motorista);
     }
 
@@ -29,13 +33,12 @@ public class MotoristaService {
     }
 
     public boolean delete(String cpf) {
-        Motorista motorista = motoristaRepository.findById(cpf).orElse(null);
-        try {
-            motoristaRepository.delete(motorista);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return motoristaRepository.findById(cpf)
+                .map(m -> {
+                    motoristaRepository.delete(m);
+                    return true;
+                })
+                .orElse(false);
     }
 
     public void update (String cpf, String name, String phone, String rg, LocalDate licenseExpiryDate, LocalDate birthDate, String logradouro, String numero, String complemento, String bairro, String cidade, String estado, String cep, String cnh, String cetpp,

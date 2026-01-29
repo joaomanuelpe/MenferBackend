@@ -22,9 +22,6 @@ public class ComissaoMotoristaRestController {
     public ResponseEntity<Object> getAll() {
         try {
             List<ComissaoMotoristaResponseDTO> comissoes = comissaoMotoristaService.getAll();
-            if (comissoes.isEmpty()) {
-                return ResponseEntity.badRequest().body("Não foram encontradas comissões!");
-            }
             return ResponseEntity.ok().body(Map.of("status", 200, "comissoes", comissoes));
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro ao consultar as comissões: " + e.getMessage());
