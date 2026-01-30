@@ -10,7 +10,7 @@ public class Acesso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "\"idAcesso\"")
-    private Integer idAcesso;
+    private Long idAcesso;
 
     @Column(name = "tipo", nullable = false)
     private String tipo;
@@ -36,7 +36,7 @@ public class Acesso {
     public Acesso() {
     }
 
-    public Acesso(Integer idAcesso, String tipo, boolean cardCadastro, boolean cardFinanceiro, boolean cardViagem, boolean cardAbastecimento, boolean cardDocumento, boolean cardFechamento) {
+    public Acesso(Long idAcesso, String tipo, boolean cardCadastro, boolean cardFinanceiro, boolean cardViagem, boolean cardAbastecimento, boolean cardDocumento, boolean cardFechamento) {
         this.idAcesso = idAcesso;
         this.tipo = tipo;
         this.cardCadastro = cardCadastro;
@@ -47,11 +47,11 @@ public class Acesso {
         this.cardFechamento = cardFechamento;
     }
 
-    public Integer getIdAcesso() {
+    public Long getIdAcesso() {
         return idAcesso;
     }
 
-    public void setIdAcesso(Integer idAcesso) {
+    public void setIdAcesso(Long idAcesso) {
         this.idAcesso = idAcesso;
     }
 
